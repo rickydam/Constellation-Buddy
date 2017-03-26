@@ -28,6 +28,8 @@ import javax.imageio.ImageIO;
 public class GUI extends JPanel {
     private static final String LEFT = "Left";
     private static final String RIGHT = "Right";
+    private static final String UP = "Up";
+    private static final String DOWN = "Down";
     private BufferedImage image;
     private JPanel canvas;
     private JButton leftButton;
@@ -56,21 +58,51 @@ public class GUI extends JPanel {
         InputMap inputmap = canvas.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), LEFT);
         inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), RIGHT);
+        inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), UP);
+        inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), DOWN);
 
         int scrollableIncrement = 10;
         ActionMap actmap = canvas.getActionMap();
-        actmap.put(LEFT, new UpDownAction(LEFT, scrollPane.getHorizontalScrollBar().getModel(), scrollableIncrement));
-        actmap.put(RIGHT, new UpDownAction(RIGHT, scrollPane.getHorizontalScrollBar().getModel(), scrollableIncrement));
+        actmap.put(LEFT, new LeftRightAction(LEFT, scrollPane.getHorizontalScrollBar().getModel(), scrollableIncrement));
+        actmap.put(RIGHT, new LeftRightAction(RIGHT, scrollPane.getHorizontalScrollBar().getModel(), scrollableIncrement));
+        actmap.put(UP, new UpDownAction(UP, scrollPane.getVerticalScrollBar().getModel(), scrollableIncrement));
+        actmap.put(DOWN, new UpDownAction(DOWN, scrollPane.getVerticalScrollBar().getModel(), scrollableIncrement));
 
         setLayout(new BorderLayout());
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    // Action for our key binding to perform when bound event occurs
+    // Action for vertical key binding to perform when bound event occurs
     private class UpDownAction extends AbstractAction {
         private BoundedRangeModel vScrollBarModel;
         private int scrollableIncrement;
         public UpDownAction(String name, BoundedRangeModel model, int scrollableIncrement) {
+            super(name);
+            this.vScrollBarModel = model;
+            this.scrollableIncrement = scrollableIncrement;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            String name = getValue(AbstractAction.NAME).toString();
+            int value = vScrollBarModel.getValue();
+            if (name.equals(UP)) {
+                cFinder.writeToFile("0 1", "data.txt");
+                value -= scrollableIncrement;
+                vScrollBarModel.setValue(value);
+            } else if (name.equals(DOWN)) {
+                cFinder.writeToFile("0 -1", "data.txt");
+                value += scrollableIncrement;
+                vScrollBarModel.setValue(value);
+            }
+        }
+    }
+    
+    // Action for horizontal key binding to perform when bound event occurs
+    private class LeftRightAction extends AbstractAction {
+        private BoundedRangeModel vScrollBarModel;
+        private int scrollableIncrement;
+        public LeftRightAction(String name, BoundedRangeModel model, int scrollableIncrement) {
             super(name);
             this.vScrollBarModel = model;
             this.scrollableIncrement = scrollableIncrement;
