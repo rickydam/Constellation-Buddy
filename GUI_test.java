@@ -1,5 +1,4 @@
 import java.io.IOException;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -18,26 +17,29 @@ public class GUI_test {
             }
         });
         
+        // Server/client moved to Python
+        /*
         SocketClient server = new SocketClient();
         System.out.println("Started Socket Client");
-//        try {
-//            server.startTCP();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            server.startTCP();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         System.out.println("Started Client");
 
-        //String answer;
-        //while(true) {
-        // Blocking call to show received messages.
-        //answer = server.getMessage();
-        //if (answer != null) {
-            //System.out.println(answer);
-            //server.sendMessage("Hello Stuff");
-            //answer = "";
-        //}
-        //} else {
-            //System.err.println("Error: Null message was received");
-        //}
+        String answer;
+        while(true) {
+        //Blocking call to show received messages.
+        answer = server.getMessage();
+        if (answer != null) {
+            System.out.println(answer);
+            server.sendMessage("Hello World");
+            answer = "";
+        }
+        } else {
+            System.err.println("Error: Null message was received");
+        }
+        */
     }
 }

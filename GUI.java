@@ -1,9 +1,7 @@
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -11,37 +9,33 @@ import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
-import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 import javax.swing.ActionMap;
 import javax.swing.JComponent;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.AbstractAction;
-import javax.swing.SwingUtilities;
 import javax.swing.BoundedRangeModel;
-import javax.swing.text.JTextComponent;
 import java.net.URL;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class GUI extends JPanel {
+	private final String filePath = "data.txt";
     private static final String LEFT = "Left";
     private static final String RIGHT = "Right";
     private static final String UP = "Up";
     private static final String DOWN = "Down";
     private BufferedImage image;
     private JPanel canvas;
-    private JButton leftButton;
-    private JButton rightButton;
 	ConstellationFinder cFinder;
 	
     public GUI() {
     	cFinder = new ConstellationFinder();
         try {
-            this.image = ImageIO.read(new URL("https://amazingsky.files.wordpress.com/2013/07/reesor-ranch-night-sky-panorama.jpg"));
+        	// Old image at https://amazingsky.files.wordpress.com/2013/07/reesor-ranch-night-sky-panorama.jpg
+            this.image = ImageIO.read(new URL("http://media.nj.com/inside-jersey/photo/njnightsky-jupiterpng-1f7ae063bff77335.png"));
         } catch(IOException ex) {
             Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -104,12 +98,12 @@ public class GUI extends JPanel {
         public void actionPerformed(ActionEvent ae) {
             String name = getValue(AbstractAction.NAME).toString();
             int value = vScrollBarModel.getValue();
-            if (name.equals(DOWN)) {
-                cFinder.writeToFile("0 -1", "data.txt");
+            if (name.equals(UP)) {
+                cFinder.writeToFile("0 -1", filePath);
                 value -= scrollableIncrement;
                 vScrollBarModel.setValue(value);
-            } else if (name.equals(UP)) {
-                cFinder.writeToFile("0 1", "data.txt");
+            } else if (name.equals(DOWN)) {
+                cFinder.writeToFile("0 1", filePath);
                 value += scrollableIncrement;
                 vScrollBarModel.setValue(value);
             }
@@ -131,11 +125,11 @@ public class GUI extends JPanel {
             String name = getValue(AbstractAction.NAME).toString();
             int value = vScrollBarModel.getValue();
             if (name.equals(LEFT)) {
-                cFinder.writeToFile("-1 0", "data.txt");
+                cFinder.writeToFile("-1 0", filePath);
                 value -= scrollableIncrement;
                 vScrollBarModel.setValue(value);
             } else if (name.equals(RIGHT)) {
-                cFinder.writeToFile("1 0", "data.txt");
+                cFinder.writeToFile("1 0", filePath);
                 value += scrollableIncrement;
                 vScrollBarModel.setValue(value);
             }
