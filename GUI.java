@@ -32,17 +32,19 @@ public class GUI extends JPanel {
     // LabView positions for the servo
     private int horizontal = 0;
     private int vertical = 0;
+    
+    /* CALIBRATION */
     // LabView limits for the servo motor that rotates the camera
     private final int HORIZONTAL_MAX = 200;
     private final int HORIZONTAL_MIN = -200;
     // LabView limits for the servo motor that points the camera
-    private final int VERTICAL_MAX = 50;
-    private final int VERTICAL_MIN = -75;
+    private final int VERTICAL_MAX = 30;
+    private final int VERTICAL_MIN = -90;
     // amount of LabView points with which to change the servo
     private final int CHANGE = 5;
 	
     public GUI() {
-    	cFinder = new ConstellationFinder();
+    	cFinder = new ConstellationFinder(HORIZONTAL_MAX, VERTICAL_MAX, HORIZONTAL_MIN, VERTICAL_MIN);
         try {
         	// Old image at https://amazingsky.files.wordpress.com/2013/07/reesor-ranch-night-sky-panorama.jpg
             this.image = ImageIO.read(new URL("http://media.nj.com/inside-jersey/photo/njnightsky-jupiterpng-1f7ae063bff77335.png"));
@@ -61,9 +63,9 @@ public class GUI extends JPanel {
         this.canvas.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-            	horizontal = e.getX();
-            	vertical = e.getY();
-				cFinder.checkConstellation(e.getX(), e.getY());
+				int[] array = cFinder.checkConstellation(e.getX(), e.getY());
+				horizontal = array[0];
+				vertical = array[1];
             }
 
 			@Override
@@ -114,14 +116,14 @@ public class GUI extends JPanel {
             	if (vertical < VERTICAL_MAX - CHANGE) {
             	    vertical += 5;
             	}
-                cFinder.writeToFile(Integer.toString(horizontal) + "," + Integer.toString(vertical), dataPath);
+                cFinder.writeToFile(horizontal, vertical, dataPath);
                 value -= scrollableIncrement;
                 vScrollBarModel.setValue(value);
             } else if (name.equals(DOWN)) {
             	if (vertical > VERTICAL_MIN + CHANGE) {
             	    vertical += -5;
             	}
-                cFinder.writeToFile(Integer.toString(horizontal) + "," + Integer.toString(vertical), dataPath);
+                cFinder.writeToFile(horizontal, vertical, dataPath);
                 value += scrollableIncrement;
                 vScrollBarModel.setValue(value);
             }
@@ -146,14 +148,14 @@ public class GUI extends JPanel {
             	if (horizontal > HORIZONTAL_MIN + CHANGE) {
             		horizontal += -CHANGE;
             	}
-                cFinder.writeToFile(Integer.toString(horizontal) + "," + Integer.toString(vertical), dataPath);
+                cFinder.writeToFile(horizontal, vertical, dataPath);
                 value -= scrollableIncrement;
                 vScrollBarModel.setValue(value);
             } else if (name.equals(RIGHT)) {
             	if (horizontal < HORIZONTAL_MAX - CHANGE) {
             	    horizontal += 5;
             	}
-                cFinder.writeToFile(Integer.toString(horizontal) + "," + Integer.toString(vertical), dataPath);
+                cFinder.writeToFile(horizontal, vertical, dataPath);
                 value += scrollableIncrement;
                 vScrollBarModel.setValue(value);
             }
