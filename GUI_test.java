@@ -5,8 +5,8 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public class GUI_test {
-	public static void main(String[] args) {
-//		SwingUtilities.invokeLater(new Runnable() {
+    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(new Runnable() {
 //            @Override
 //            public void run() {
 //                JPanel panel = new GUI();
@@ -17,12 +17,25 @@ public class GUI_test {
 //                frame.setVisible(true);
 //            }
 //        });
-		
-		SocketClient server = new SocketClient();
-		try {
-			server.startTCP();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+        
+        SocketClient server = new SocketClient();
+        System.out.println("Started Socket Client");
+        try {
+            server.startTCP();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	System.out.println("Started Client");
+
+        String answer;
+        while(true) {
+        // Blocking call to show received messages.
+        answer = server.getMessage();
+        if (answer != "") {
+            System.out.println(answer);
+            server.sendMessage("Hello Stuff");
+	    answer = "";
+        }
+        } 
+    }
 }
