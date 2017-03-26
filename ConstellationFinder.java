@@ -6,13 +6,14 @@ import java.util.Map;
 
 public class ConstellationFinder {
 	// Hashmap of all constellations and their coordinate ranges
-	// Coordinates are stored as {xmin, ymin, xmax, ymax}
+	// Coordinates are stored as {xmin, xmax, ymin, ymax}
 	Map<String, Integer[]> constellations;
 	
+	@SuppressWarnings("serial")
 	public ConstellationFinder() {
 		constellations = new HashMap<String, Integer[]>() {{
-			Integer[] coordinates = {0, 0, 100, 100};
-			put("Little Dipper", coordinates);
+			Integer[] coordinates = {221, 364, 258, 302};
+			put("Some comet", coordinates);
 		}};
 	}
     
@@ -22,10 +23,11 @@ public class ConstellationFinder {
      * @param y - Mouse y-coordinate
      */
     public String checkConstellation(int x, int y) {
+    	//System.out.println(x + ", " + y);
     	for(Map.Entry<String, Integer[]> entry : constellations.entrySet()) {
     		String constellation = entry.getKey();
     		Integer[] bounds = entry.getValue();
-    		if(x >= bounds[0] && y >= bounds[1] && x <= bounds[2] && y <= bounds[3]) {
+    		if(x >= bounds[0] && x <= bounds[1] && y >= bounds[2] && y <= bounds[3]) {
     			// Within bounds, so constellation is a match
     			System.out.println("You clicked on " + constellation);
     			return constellation;

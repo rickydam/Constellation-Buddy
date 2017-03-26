@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
@@ -51,6 +53,22 @@ public class GUI extends JPanel {
                 g.drawImage(image, 0, 0, null);
             }
         };
+        
+        this.canvas.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+				cFinder.checkConstellation(e.getX(), e.getY());
+            }
+
+			@Override
+			public void mousePressed(MouseEvent e) {}
+			@Override
+			public void mouseReleased(MouseEvent e) {}
+			@Override
+			public void mouseEntered(MouseEvent e) {}
+			@Override
+			public void mouseExited(MouseEvent e) {}
+        });
 
         canvas.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
         JScrollPane scrollPane = new JScrollPane(canvas);
@@ -86,12 +104,12 @@ public class GUI extends JPanel {
         public void actionPerformed(ActionEvent ae) {
             String name = getValue(AbstractAction.NAME).toString();
             int value = vScrollBarModel.getValue();
-            if (name.equals(UP)) {
-                cFinder.writeToFile("0 1", "data.txt");
+            if (name.equals(DOWN)) {
+                cFinder.writeToFile("0 -1", "data.txt");
                 value -= scrollableIncrement;
                 vScrollBarModel.setValue(value);
-            } else if (name.equals(DOWN)) {
-                cFinder.writeToFile("0 -1", "data.txt");
+            } else if (name.equals(UP)) {
+                cFinder.writeToFile("0 1", "data.txt");
                 value += scrollableIncrement;
                 vScrollBarModel.setValue(value);
             }
@@ -122,19 +140,5 @@ public class GUI extends JPanel {
                 vScrollBarModel.setValue(value);
             }
         }
-    }
-
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                JPanel panel = new GUI();
-                JFrame frame = new JFrame();
-                frame.setContentPane(panel);
-                frame.setSize(1500, 895);
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setVisible(true);
-            }
-        });
     }
 }
