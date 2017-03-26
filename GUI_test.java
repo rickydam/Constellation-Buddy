@@ -28,14 +28,14 @@ public class GUI_test {
 	System.out.println("Started Client");
 
         String answer;
-        while(true) {
+        //while(true) {
         // Blocking call to show received messages.
         answer = server.getMessage();
         if (answer != "") {
             System.out.println(answer);
-            server.sendMessage("Hello Stuff");
+            //server.sendMessage("Hello Stuff");
 	    answer = "";
-        }
+        //}
         } 
     }
 }

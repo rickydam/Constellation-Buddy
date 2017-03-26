@@ -13,6 +13,8 @@ public class SocketClient {
     final int PORT = 6123;
     final String ADDRESS = "172.16.0.10";
     Socket client = null;
+    BufferedReader in = null;
+    DataOutputStream out = null;
 
     /**
      * Start the server and wait for incoming connections
@@ -20,6 +22,8 @@ public class SocketClient {
      */
     public void startTCP() throws IOException {
         client = new Socket(ADDRESS, PORT); // Connect to LabView server
+        in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        out = new DataOutputStream(client.getOutputStream());
     }
 
     /**
@@ -29,19 +33,15 @@ public class SocketClient {
     public String getMessage() {
         if (client != null) {
         	try {
-        		BufferedReader in = null;
         		String fromServer = null;
-        		in = new BufferedReader(new InputStreamReader(client.getInputStream()));
-        		while ((in.readLine()) != null) {
-		            fromServer = in.readLine();
+        		String line;
+        		while ((line = in.readLine()) != null) {
+		            fromServer = line;
 		            System.out.println("Server: " + fromServer);
 		        }
-		        in.close();
-//                BufferedReader input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-//                String answer = input.readLine();
                 return fromServer;
         	} catch(IOException e) {
-        		e.printStackTrace();
+        		System.out.println("Failed to get: " + e.getMessage());
         	}
         }
         return "";
@@ -55,10 +55,9 @@ public class SocketClient {
         if(client != null) {
             try {
                 // Connected, so try sending a message to the server
-                DataOutputStream out = new DataOutputStream(client.getOutputStream());
                 out.writeUTF("Hi");
             } catch (IOException e) {
-            	System.out.println("Failed send :( " + e.toString());
+            	System.out.println("Failed to send " + e.getMessage());
             }
         } else {
             // Not connected to the server
