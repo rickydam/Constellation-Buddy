@@ -31,11 +31,13 @@ public class GUI_test {
         //while(true) {
         // Blocking call to show received messages.
         answer = server.getMessage();
-        if (answer != "") {
+        if (answer != null) {
             System.out.println(answer);
             //server.sendMessage("Hello Stuff");
-	    answer = "";
+            answer = "";
         //}
-        } 
+        } else {
+            System.err.println("Error: Null message was received");
+        }
     }
 }

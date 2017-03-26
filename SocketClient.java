@@ -3,8 +3,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * TCP client to connect to LabView
@@ -41,10 +39,11 @@ public class SocketClient {
 		        }
                 return fromServer;
         	} catch(IOException e) {
-        		System.out.println("Failed to get: " + e.getMessage());
+        		System.err.println("Failed to get: " + e.getMessage());
         	}
         }
-        return "";
+        System.err.println("Error: Client is null when message was received");
+        return null;
     }
     
     /**
