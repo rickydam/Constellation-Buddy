@@ -13,14 +13,6 @@ public class SocketClient {
     final int PORT = 6123;
     final String ADDRESS = "172.16.0.10";
     Socket client = null;
-    
-    // Hashmap of all constellations and their coordinate ranges
-    // Coordinates are stored as {xmin, ymin, xmax, ymax}
-    @SuppressWarnings("serial")
-    final Map<String, Integer[]> constellations = new HashMap<String, Integer[]>() {{
-        Integer[] coordinates = {0, 0, 100, 100};
-        put("Little Dipper", coordinates);
-    }};
 
     /**
      * Start the server and wait for incoming connections
@@ -30,18 +22,29 @@ public class SocketClient {
         client = new Socket(ADDRESS, PORT); // Connect to LabView server
     }
 
+    /**
+     * Receive message from the server
+     * @return
+     */
     public String getMessage() {
         if (client != null) {
-            try {
-                BufferedReader input = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                String answer = input.readLine();
-		return answer;
-            }
-           catch(IOException e)
-           {
-           }
-       }
-       return "";
+        	try {
+        		BufferedReader in = null;
+        		String fromServer = null;
+        		in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        		while ((in.readLine()) != null) {
+		            fromServer = in.readLine();
+		            System.out.println("Server: " + fromServer);
+		        }
+		        in.close();
+//                BufferedReader input = new BufferedReader(new InputStreamReader(client.getInputStream()));
+//                String answer = input.readLine();
+                return fromServer;
+        	} catch(IOException e) {
+        		e.printStackTrace();
+        	}
+        }
+        return "";
     }
     
     /**
@@ -55,23 +58,11 @@ public class SocketClient {
                 DataOutputStream out = new DataOutputStream(client.getOutputStream());
                 out.writeUTF("Hi");
             } catch (IOException e) {
-		    System.out.println("Failed send :( " + e.toString());
+            	System.out.println("Failed send :( " + e.toString());
             }
         } else {
             // Not connected to the server
             System.err.println("Send message failed: Client not connected.");
-        }
-    }
-    
-    /**
-     * Look up if a constellation exists at a certain xy-coordinate
-     * @param x
-     * @param y
-     */
-    public void checkConstellation(int x, int y) {
-        for(String constellation : constellations.keySet()) {
-                
-            
         }
     }
 }
