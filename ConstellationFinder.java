@@ -9,11 +9,13 @@ import java.util.Map;
  * and how to point the telescope at that constellation
  */
 public class ConstellationFinder {
+	private final String dataPath = "data.txt";
 	// Hashmap of all constellations and their coordinate ranges
 	// Coordinates are stored as {xmin, xmax, ymin, ymax, xrot, yrot}
-	Map<String, Integer[]> constellations;
+	private Map<String, Integer[]> constellations;
 	
 	public ConstellationFinder() {
+		writeToFile("0,0", dataPath);
 		constellations = new HashMap<String, Integer[]>() {{
 			Integer[][] allCoordinates = {
 					{0, 500, 345, 705, 20, 20},
@@ -57,7 +59,7 @@ public class ConstellationFinder {
     		if(x >= bounds[0] && x <= bounds[1] && y >= bounds[2] && y <= bounds[3]) {
     			// Within bounds, so constellation is a match
     			System.out.println("You clicked on " + constellation);
-    			writeToFile(bounds[4] + " " + bounds[5], "data.txt");
+    			writeToFile(bounds[4] + "," + bounds[5], dataPath);
     			return constellation;
     		}
     	}

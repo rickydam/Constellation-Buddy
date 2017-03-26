@@ -9,7 +9,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
-import javax.swing.JButton;
 import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 import javax.swing.ActionMap;
@@ -22,14 +21,14 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class GUI extends JPanel {
-	private final String filePath = "data.txt";
+	private final String dataPath = "data.txt";
     private static final String LEFT = "Left";
     private static final String RIGHT = "Right";
     private static final String UP = "Up";
     private static final String DOWN = "Down";
     private BufferedImage image;
     private JPanel canvas;
-	ConstellationFinder cFinder;
+    private ConstellationFinder cFinder;
 	
     public GUI() {
     	cFinder = new ConstellationFinder();
@@ -99,11 +98,11 @@ public class GUI extends JPanel {
             String name = getValue(AbstractAction.NAME).toString();
             int value = vScrollBarModel.getValue();
             if (name.equals(UP)) {
-                cFinder.writeToFile("0 -1", filePath);
+                cFinder.writeToFile("0,-1", dataPath);
                 value -= scrollableIncrement;
                 vScrollBarModel.setValue(value);
             } else if (name.equals(DOWN)) {
-                cFinder.writeToFile("0 1", filePath);
+                cFinder.writeToFile("0,1", dataPath);
                 value += scrollableIncrement;
                 vScrollBarModel.setValue(value);
             }
@@ -125,11 +124,11 @@ public class GUI extends JPanel {
             String name = getValue(AbstractAction.NAME).toString();
             int value = vScrollBarModel.getValue();
             if (name.equals(LEFT)) {
-                cFinder.writeToFile("-1 0", filePath);
+                cFinder.writeToFile("-1,0", dataPath);
                 value -= scrollableIncrement;
                 vScrollBarModel.setValue(value);
             } else if (name.equals(RIGHT)) {
-                cFinder.writeToFile("1 0", filePath);
+                cFinder.writeToFile("1,0", dataPath);
                 value += scrollableIncrement;
                 vScrollBarModel.setValue(value);
             }

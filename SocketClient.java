@@ -8,11 +8,11 @@ import java.net.Socket;
  * TCP client to connect to LabView
  */
 public class SocketClient {
-    final int PORT = 6123;
-    final String ADDRESS = "172.16.0.10";
-    Socket client = null;
-    BufferedReader in = null;
-    DataOutputStream out = null;
+    private final int PORT = 6123;
+    private final String ADDRESS = "172.16.0.10";
+    private Socket client = null;
+    private BufferedReader in = null;
+    private DataOutputStream out = null;
 
     /**
      * Start the server and wait for incoming connections
