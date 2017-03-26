@@ -8,14 +8,14 @@ import java.util.Map;
 
 /**
  * TCP client to connect to LabView
- *
  */
 public class SocketClient {
 	final int PORT = 6123;
 	final String ADDRESS = "172.16.0.10";
 	Socket client = null;
 	
-	// Hashmap of all constellations and their 
+	// Hashmap of all constellations and their coordinate ranges
+	// Coordinates are stored as {xmin, ymin, xmax, ymax}
 	@SuppressWarnings("serial")
 	final Map<String, Integer[]> constellations = new HashMap<String, Integer[]>() {{
 		Integer[] coordinates = {0, 0, 100, 100};
@@ -58,6 +58,9 @@ public class SocketClient {
      * @param y
      */
     public void checkConstellation(int x, int y) {
-    	
+    	for(String constellation : constellations.keySet()) {
+    			
+    		
+    	}
     }
 }
