@@ -1,3 +1,6 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,5 +32,26 @@ public class ConstellationFinder {
     		}
     	}
 		return null;
+    }
+    
+    /**
+     * Write a string to a file
+     * @param text
+     * @param filePath
+     */
+    public void writeToFile(String text, String filePath) {
+		BufferedWriter bw = null;
+		try {
+			bw = new BufferedWriter(new FileWriter(filePath));
+			bw.write(text);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (bw != null) bw.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
     }
 }

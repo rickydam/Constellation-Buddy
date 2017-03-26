@@ -20,24 +20,24 @@ public class GUI_test {
         
         SocketClient server = new SocketClient();
         System.out.println("Started Socket Client");
-        try {
-            server.startTCP();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-	System.out.println("Started Client");
+//        try {
+//            server.startTCP();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        System.out.println("Started Client");
 
-        String answer;
+        //String answer;
         //while(true) {
         // Blocking call to show received messages.
-        answer = server.getMessage();
-        if (answer != null) {
-            System.out.println(answer);
+        //answer = server.getMessage();
+        //if (answer != null) {
+            //System.out.println(answer);
             //server.sendMessage("Hello Stuff");
-            answer = "";
+            //answer = "";
         //}
-        } else {
-            System.err.println("Error: Null message was received");
-        }
+        //} else {
+            //System.err.println("Error: Null message was received");
+        //}
     }
 }

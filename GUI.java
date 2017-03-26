@@ -32,8 +32,10 @@ public class GUI extends JPanel {
     private JPanel canvas;
     private JButton leftButton;
     private JButton rightButton;
-
+	ConstellationFinder cFinder;
+	
     public GUI() {
+    	cFinder = new ConstellationFinder();
         try {
             this.image = ImageIO.read(new URL("https://amazingsky.files.wordpress.com/2013/07/reesor-ranch-night-sky-panorama.jpg"));
         } catch(IOException ex) {
@@ -79,9 +81,11 @@ public class GUI extends JPanel {
             String name = getValue(AbstractAction.NAME).toString();
             int value = vScrollBarModel.getValue();
             if (name.equals(LEFT)) {
+                cFinder.writeToFile("-1 0", "data.txt");
                 value -= scrollableIncrement;
                 vScrollBarModel.setValue(value);
             } else if (name.equals(RIGHT)) {
+                cFinder.writeToFile("1 0", "data.txt");
                 value += scrollableIncrement;
                 vScrollBarModel.setValue(value);
             }

@@ -33,15 +33,10 @@ public class SocketClient {
         	try {
         		String fromServer = "";
         		String line;
-        		
-        		int temp = 0;
-        		while( (temp = in.read()) != -1){
-        		   System.out.print( (char)temp );
-        		}
-//        		while ((line = in.readLine()) != null) {
-//		            fromServer = line;
-//		            System.out.println("Server: " + fromServer);
-//		        }
+        		while ((line = in.readLine()) != null) {
+		            fromServer = line;
+		            System.out.println("Server: " + fromServer);
+		        }
                 return fromServer;
         	} catch(IOException e) {
         		System.err.println("Failed to get: " + e.getMessage());
