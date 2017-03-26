@@ -13,9 +13,13 @@ public class ConstellationFinder {
 	// Hashmap of all constellations and their coordinate ranges
 	// Coordinates are stored as {xmin, xmax, ymin, ymax, xrot, yrot}
 	private Map<String, Integer[]> constellations;
-	
-	public ConstellationFinder() {
-		writeToFile("0,0", dataPath);
+	private int maxX, maxY, minX, minY;
+	public ConstellationFinder(int MAX_X, int MAX_Y, int MIN_X, int MIN_Y) {
+		this.maxX = MAX_X;
+		this.maxY = MAX_Y;
+		this.minX = MIN_X;
+		this.minY = MIN_Y;
+		writeToFile(0,0, dataPath);
 		constellations = new HashMap<String, Integer[]>() {{
 			Integer[][] allCoordinates = {
 					{0, 500, 345, 705, -200, -57},
@@ -51,7 +55,7 @@ public class ConstellationFinder {
      * @param x - Mouse x-coordinate
      * @param y - Mouse y-coordinate
      */
-    public String checkConstellation(int x, int y) {
+    public int[] checkConstellation(int x, int y) {
     	//System.out.println(x + ", " + y);
     	for(Map.Entry<String, Integer[]> entry : constellations.entrySet()) {
     		String constellation = entry.getKey();
@@ -59,8 +63,14 @@ public class ConstellationFinder {
     		if(x >= bounds[0] && x <= bounds[1] && y >= bounds[2] && y <= bounds[3]) {
     			// Within bounds, so constellation is a match
     			System.out.println("You clicked on " + constellation);
-    			writeToFile(bounds[4] + "," + bounds[5], dataPath);
-    			return constellation;
+    			// hack in a scaling from -200 to 200
+    			// (x - min)/(max - min) * (MAX_X + MIN_X) - MIN_X is in [MIN_X, MAX_X]
+    			int new_x = (int)((bounds[4] + 200.0)/(124 + 200)*(maxX - minX) + minX);
+    			int new_y = (int)((bounds[5] + 178.0)/(55 + 178) * (maxY - minY) + minY);
+    			System.out.println("Going to " + new_x + "," + new_y + " which was originally " + bounds[4] + "," + bounds[5]);
+    			writeToFile(new_x, new_y, dataPath);
+    			int[] array = {new_x, new_y};
+    			return array;
     		}
     	}
 		return null;
@@ -71,9 +81,10 @@ public class ConstellationFinder {
      * @param text
      * @param filePath
      */
-    public void writeToFile(String text, String filePath) {
+    public void writeToFile(int x, int y, String filePath) {
 		BufferedWriter bw = null;
 		try {
+			String text = x + "," + y;
 			bw = new BufferedWriter(new FileWriter(filePath));
 			bw.write(text);
 		} catch (IOException e) {
