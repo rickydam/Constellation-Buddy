@@ -1,39 +1,104 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.BorderLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import javax.swing.JPanel;
+import javax.swing.JFrame;
+import javax.swing.JButton;
+import javax.swing.InputMap;
+import javax.swing.KeyStroke;
+import javax.swing.ActionMap;
+import javax.swing.JComponent;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.AbstractAction;
+import javax.swing.SwingUtilities;
+import javax.swing.BoundedRangeModel;
+import javax.swing.text.JTextComponent;
+import java.net.URL;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
-public class GUI extends JFrame implements ActionListener {
-    // Global Variables
-    private JFrame frame;
-    private JLabel stars;
+public class GUI extends JPanel {
+    private static final String LEFT = "Left";
+    private static final String RIGHT = "Right";
+    private BufferedImage image;
+    private JPanel canvas;
     private JButton leftButton;
     private JButton rightButton;
 
-    // Construction for GUI
     public GUI() {
-        frame = new JFrame("RoboHacks2017");
-        frame.setPreferredSize(new Dimension(1200, 1200));
+        try {
+            this.image = ImageIO.read(new URL("https://amazingsky.files.wordpress.com/2013/07/reesor-ranch-night-sky-panorama.jpg"));
+        } catch(IOException ex) {
+            Logger.getLogger(GUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-        Container contentPane = frame.getContentPane();
-        contentPane.setLayout(new BorderLayout());
+        this.canvas = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(image, 0, 0, null);
+            }
+        };
 
-        stars = new JLabel(new ImageIcon("stars.jpg"));
-        frame.add(stars, BorderLayout.CENTER);
+        canvas.setPreferredSize(new Dimension(image.getWidth(), image.getHeight()));
+        JScrollPane scrollPane = new JScrollPane(canvas);
 
-        leftButton = new JButton("<");
-        leftButton.setPreferredSize(new Dimension(100, 100));
-        leftButton.setMaximumSize(new Dimension(100, 100));
-        frame.add(leftButton, BorderLayout.WEST);
+        InputMap inputmap = canvas.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), LEFT);
+        inputmap.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), RIGHT);
 
-        rightButton = new JButton(">");
-        frame.add(rightButton, BorderLayout.EAST);
+        int scrollableIncrement = 10;
+        ActionMap actmap = canvas.getActionMap();
+        actmap.put(LEFT, new UpDownAction(LEFT, scrollPane.getHorizontalScrollBar().getModel(), scrollableIncrement));
+        actmap.put(RIGHT, new UpDownAction(RIGHT, scrollPane.getHorizontalScrollBar().getModel(), scrollableIncrement));
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setResizable(false);
-        frame.setVisible(true);
+        setLayout(new BorderLayout());
+        add(scrollPane, BorderLayout.CENTER);
     }
 
-    public void actionPerformed(ActionEvent e) {
+    // Action for our key binding to perform when bound event occurs
+    private class UpDownAction extends AbstractAction {
+        private BoundedRangeModel vScrollBarModel;
+        private int scrollableIncrement;
+        public UpDownAction(String name, BoundedRangeModel model, int scrollableIncrement) {
+            super(name);
+            this.vScrollBarModel = model;
+            this.scrollableIncrement = scrollableIncrement;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent ae) {
+            String name = getValue(AbstractAction.NAME).toString();
+            int value = vScrollBarModel.getValue();
+            if (name.equals(LEFT)) {
+                value -= scrollableIncrement;
+                vScrollBarModel.setValue(value);
+            } else if (name.equals(RIGHT)) {
+                value += scrollableIncrement;
+                vScrollBarModel.setValue(value);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                JPanel panel = new GUI();
+                JFrame frame = new JFrame();
+                frame.setContentPane(panel);
+                frame.setSize(1500, 895);
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setVisible(true);
+            }
+        });
     }
 }
