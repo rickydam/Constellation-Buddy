@@ -1,4 +1,5 @@
-![](Constellation_Buddy_Logo.jpg)
+<img src="https://github.com/rickydam/Constellation-Buddy/blob/master/Constellation_Buddy_Logo.jpg" width="50%" height="50%" />
+
 ## Inspiration
 Stargazing is appealing to a very wide audience. Although there are a lot of constellation maps to help stargazers find interesting constellations and other points of interest, it can still be a very tedious process. Clouds or other stars could also get in the way making it hard to determine exactly where the constellation is, if it is even visible. But what if a robot could take care of this troubling process?
 
