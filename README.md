@@ -15,3 +15,6 @@ Getting the Java GUI to communicate with LabView took a long time to get set up.
 
 ## Next steps
 To better improve the experience, OpenCV could be used to analyze a camera feed live from the robot. Since the GUI is built with Java, more advanced OpenCV functions are available. This would allow for a live visualization of the night sky, which could have constellations identified and pointed out by OpenCV image identification.
+
+## Team
+<img src="https://github.com/rickydam/Constellation-Buddy/blob/master/img/team.jpg" width="70%" height="70%" />
