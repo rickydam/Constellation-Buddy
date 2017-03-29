@@ -21,5 +21,5 @@ Tong Zhang, Erik Johnson, Ricky Dam, Ryan Abraham, Lucy Xiang, Adan Moran
 <img src="https://github.com/rickydam/Constellation-Buddy/blob/master/img/team.jpg" width="70%" height="70%" />
 
 ## Award
-We won the National Instruments Sponsor Award!
+We won the National Instruments Sponsor Award! <br>
 <img src="https://github.com/rickydam/Constellation-Buddy/blob/master/img/award.jpg" width="70%" height="70%" />
